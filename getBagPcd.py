@@ -1,5 +1,3 @@
-import cv2
-import time
 import glob
 import rosbag #pip3 install bagpy
 import pcl #apt install python3-pcl
