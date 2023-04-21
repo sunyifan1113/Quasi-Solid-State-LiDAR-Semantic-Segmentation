@@ -242,9 +242,11 @@ for i in range(1, len(pos)):
   sampledPointInfo = depth_img[idx_uv[0],idx_uv[1],:] #1/d, intensity, label, class
   valid_idx = np.where(sampledPointInfo[:,0]>0)[0]
   X2 = np.multiply(np.linalg.inv(K)@pattern[0][:,valid_idx],1/sampledPointInfo[valid_idx,0])
+  X2 = np.linalg.inv(T)@X2
   #pcd.points = o3d.utility.Vector3dVector(X2.T)
   #o3d.visualization.draw_geometries([pcd])
   output = np.block([X2.T,sampledPointInfo[valid_idx,1:]]) #x, y, z, intensity, label, class
+  output_stack = np.block([output1,output2])
   filename = str(i+1961).zfill(6)
   bin_data = np.array(output[:,:4]).astype(np.float32)
   label_data = np.array([label_map[k] if k in label_map else 0 for k in output[:,5]]).reshape(-1).astype(np.int32)
